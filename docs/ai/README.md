@@ -7,7 +7,7 @@ This directory contains specifications and guidelines intended to assist AI tool
 - [Project Overview](./project-overview.md) - High-level description of the project goals and architecture
 - [Session Prompts](./session-prompts) - Breakdown of development phases into focused agent sessions
   - [Agent Session Templates](./session-prompts/agent-session-templates.md) - Templates for structuring agent sessions
-  - [Stage 1 phased work outline](./session-prompts/stage1/stage1-phased-work-outline.md) - Overview of the first stage of development
+  - [Stage 1 phased work outline](./session-prompts/stage1-phased-work-outline.md) - Overview of the first stage of development
   - [Stage 1 Sessions](./session-prompts/stage1) - Detailed prompts for the first stage of development
     - [Phase 1](./session-prompts/stage1/st1-phase-1.md) - Environment Setup and Server Foundation
     - [Phase 2](./session-prompts/stage1/st1-phase-2.md) - Core Tools Implementation with Integrated Error Handling
