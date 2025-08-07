@@ -1,10 +1,10 @@
-## Recall Network Integration
+## Recall Platform Integration
 
-After completing the basic Astral MCP server implementation, we plan to to extend its capabilities by integrating with the [Recall Network](https://docs.recall.network) ecosystem to add persistent memory, cross-agent collaboration, and onchain storage for location attestation analysis.
+After completing the basic Astral MCP server implementation, we plan to to extend its capabilities by integrating with the [Recall Platform](https://docs.recall.network) ecosystem to add persistent memory, cross-agent collaboration, and onchain storage for location attestation analysis.
 
 ### Why Integrate with Recall?
 
-The Recall Network provides powerful primitives that enhance your Astral MCP agent:
+The Recall Platform provides powerful primitives that enhance your Astral MCP agent:
 
 - **Persistent Memory**: Store location attestation analysis and insights onchain for long-term agent memory
 - **Cross-Agent Collaboration**: Enable other agents to access and build upon your location proof data
