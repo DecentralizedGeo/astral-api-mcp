@@ -2,6 +2,12 @@
 
 A MCP (Model Context Protocol) server that enables AI models to query location attestations using the available Astral GraphQL endpoints and APIs.
 
+**Table of Contents**
+- [Project Overview](#project-overview)
+- [Integration with the Recall Platform](#integration-with-the-recall-platform)
+- [Quick Start](#quick-start)
+
+
 ## Quick Start
 
 ### Prerequisites
