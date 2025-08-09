@@ -21,9 +21,9 @@ def test_import():
 async def test_server_info_tool():
     """Test the server info tool."""
     from astral_mcp_server.server import get_server_info
-    
+
     info = await get_server_info()
-    
+
     assert info["name"] == "astral-mcp-server"
     assert info["version"] == "0.1.0"
     assert "capabilities" in info

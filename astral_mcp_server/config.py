@@ -22,7 +22,7 @@ SERVER_VERSION = "0.1.0"
 def get_api_key() -> Optional[str]:
     """
     Retrieve API key from environment variables.
-    
+
     Returns:
         Optional[str]: API key if set, None otherwise
     """

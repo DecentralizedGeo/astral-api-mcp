@@ -45,46 +45,50 @@ app = FastMCP(SERVER_NAME)
 async def check_astral_api_health() -> Dict[str, Any]:
     """
     Check the health status of the Astral API.
-    
+
     Performs a health check against the Astral API endpoint to verify
     connectivity and service availability.
-    
+
     Returns:
         Dict[str, Any]: Health check response containing status information
-        
+
     Raises:
         Exception: If the health check fails or times out
     """
     try:
         async with httpx.AsyncClient(timeout=DEFAULT_TIMEOUT) as client:
             logger.info(f"Checking Astral API health at: {ASTRAL_HEALTH_ENDPOINT}")
-            
+
             response = await client.get(ASTRAL_HEALTH_ENDPOINT)
             response.raise_for_status()
-            
+
             health_data = response.json()
-            
+
             result = {
                 "status": "healthy",
                 "endpoint": ASTRAL_HEALTH_ENDPOINT,
                 "response_code": response.status_code,
-                "response_time_ms": int(response.elapsed.total_seconds() * 1000),
+                "response_time_ms": (
+                    int(response.elapsed.total_seconds() * 1000)
+                    if response.elapsed is not None
+                    else None
+                ),
                 "api_data": health_data,
             }
-            
+
             logger.info(f"Health check successful: {result['status']}")
             return result
-            
+
     except httpx.TimeoutException:
         error_msg = f"Health check timed out after {DEFAULT_TIMEOUT} seconds"
         logger.error(error_msg)
         raise Exception(error_msg)
-        
+
     except httpx.HTTPStatusError as e:
         error_msg = f"Health check failed with status {e.response.status_code}: {e.response.text}"
         logger.error(error_msg)
         raise Exception(error_msg)
-        
+
     except Exception as e:
         error_msg = f"Health check failed: {str(e)}"
         logger.error(error_msg)
@@ -95,15 +99,15 @@ async def check_astral_api_health() -> Dict[str, Any]:
 async def get_server_info() -> Dict[str, Any]:
     """
     Get information about this MCP server.
-    
+
     Returns basic metadata and configuration information about the
     Astral MCP server instance.
-    
+
     Returns:
         Dict[str, Any]: Server information including name, version, and capabilities
     """
     api_key_configured = get_api_key() is not None
-    
+
     return {
         "name": SERVER_NAME,
         "version": SERVER_VERSION,
@@ -120,11 +124,11 @@ async def get_server_info() -> Dict[str, Any]:
 def main() -> None:
     """
     Main entry point for running the MCP server.
-    
+
     This function starts the FastMCP server and handles the event loop.
     """
     logger.info(f"Starting {SERVER_NAME} v{SERVER_VERSION}")
-    
+
     try:
         app.run()
     except KeyboardInterrupt:
