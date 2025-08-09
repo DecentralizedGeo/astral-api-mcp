@@ -23,7 +23,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-astral-mcp-server = "astral_mcp_server.server:main"
+start-server = "astral_mcp_server.server:main"
 
 [tool.black]
 line-length = 88
