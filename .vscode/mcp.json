@@ -1,0 +1,25 @@
+{
+	"servers": {
+		"astral-api": {
+			"command": "poetry",
+			"args": [
+				"run",
+				"start-server"
+			],
+			"cwd": "${workspaceFolder}",
+			"type": "stdio"
+		},
+		"mcp-inspector": {
+			"command": "npx",
+			"args": [
+				"@modelcontextprotocol/inspector@0.16.2",
+				"poetry",
+				"run",
+				"start-server"
+			],
+			"cwd": "${workspaceFolder}",
+			"envFile": "${workspaceFolder}/.env-mcp-inspector",
+			"type": "stdio"
+		}
+	}
+}
