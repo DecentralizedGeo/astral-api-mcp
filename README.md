@@ -63,9 +63,9 @@ poetry run python -c "import asyncio; from astral_mcp_server.server import check
 
 ### Testing the MCP Server
 
-**Important**: MCP servers don't run as web servers - they communicate via the MCP protocol. Here's how to test your server:
+> **Important**: MCP servers don't run as web servers - they communicate via the MCP protocol.
 
-1. **Test with MCP Inspector (interactive debugging)**:
+**Test with MCP Inspector (interactive debugging)**:
 
 ```bash
 poetry run mcp dev astral_mcp_server/server.py
@@ -73,7 +73,7 @@ poetry run mcp dev astral_mcp_server/server.py
 
 Alternatively, you can start the MCP Inspector from [mcp.json](.vscode/mcp.json) via the UI in VSCode.
 
-This will open the MCP Inspector in your browser where you can:
+This will open the [MCP Inspector tool](https://github.com/modelcontextprotocol/inspector) in your browser where you can:
 
 - See available tools (`check_astral_api_health`, `get_server_info`)
 - Execute tools interactively
@@ -81,7 +81,7 @@ This will open the MCP Inspector in your browser where you can:
 
 > The [.env-mcp-inspector](.env-mcp-inspector) file sets environment variables that the MCP Inspector uses to connect to the MCP server. You can modify it if needed.
 
-2. **Use with Claude Desktop or other MCP clients**:
+**Use with Claude Desktop or other MCP clients**:
 
 The following configurations allow you to connect the MCP server with clients like Claude Desktop or VSCode MCP extension.
 
