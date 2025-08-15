@@ -42,6 +42,12 @@ except ImportError:
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
+### CONSTANTS
+"""Max length for error text in API responses to prevent excessive output."""
+ERROR_TEXT_TRUNCATE_LENGTH = 500
+
+
 # Initialize FastMCP server
 app = FastMCP(SERVER_NAME)
 
@@ -232,8 +238,8 @@ async def query_location_proofs(
             "message": error_msg,
             "details": {
                 "status_code": e.response.status_code,
-                "response_text": e.response.text[:500]  # Limit error text length
-            }
+                "response_text": e.response.text[:ERROR_TEXT_TRUNCATE_LENGTH],
+            },
         }
         
     except Exception as e:
@@ -336,8 +342,8 @@ async def get_location_proof_by_uid(uid: str) -> Dict[str, Any]:
             "details": {
                 "attempted_uid": uid,
                 "status_code": e.response.status_code,
-                "response_text": e.response.text[:500]
-            }
+                "response_text": e.response.text[:ERROR_TEXT_TRUNCATE_LENGTH],
+            },
         }
         
     except Exception as e:
@@ -408,8 +414,8 @@ async def get_astral_config() -> Dict[str, Any]:
             "message": error_msg,
             "details": {
                 "status_code": e.response.status_code,
-                "response_text": e.response.text[:500]
-            }
+                "response_text": e.response.text[:ERROR_TEXT_TRUNCATE_LENGTH],
+            },
         }
         
     except Exception as e:
