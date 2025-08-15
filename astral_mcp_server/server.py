@@ -46,6 +46,15 @@ logger = logging.getLogger(__name__)
 ### CONSTANTS
 """Max length for error text in API responses to prevent excessive output."""
 ERROR_TEXT_TRUNCATE_LENGTH = 500
+"""Minimum and Maximum number of attestations to return in queries."""
+MIN_QUERY_LIMIT = 1
+MAX_QUERY_LIMIT = 100
+    if limit is not None and (
+        not isinstance(limit, int) or limit < MIN_QUERY_LIMIT or limit > MAX_QUERY_LIMIT
+    ):
+        raise ValueError(
+            f"limit must be an integer between {MIN_QUERY_LIMIT} and {MAX_QUERY_LIMIT}"
+        )
 
 
 # Initialize FastMCP server
