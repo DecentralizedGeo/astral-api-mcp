@@ -10,6 +10,8 @@ from typing import Optional
 # Astral API Configuration
 ASTRAL_API_BASE_URL = "https://api.astral.global"
 ASTRAL_HEALTH_ENDPOINT = f"{ASTRAL_API_BASE_URL}/health"
+ASTRAL_LOCATION_PROOFS_ENDPOINT = f"{ASTRAL_API_BASE_URL}/api/v0/location-proofs"
+ASTRAL_CONFIG_ENDPOINT = f"{ASTRAL_API_BASE_URL}/api/v0/config"
 
 # HTTP Client Configuration
 DEFAULT_TIMEOUT = 30.0

@@ -9,9 +9,9 @@ A MCP (Model Context Protocol) server that enables AI models to query location a
   - [Quick Start](#quick-start)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
+    - [Available Agent Tools](#available-agent-tools)
     - [Testing the MCP Server](#testing-the-mcp-server)
     - [Testing](#testing)
-    - [Available Tools](#available-tools)
     - [Development](#development)
     - [Troubleshooting](#troubleshooting)
 
@@ -60,6 +60,16 @@ poetry run python -c "import astral_mcp_server; print('Installation successful!'
 ```bash
 poetry run python -c "import asyncio; from astral_mcp_server.server import check_astral_api_health; print('Health check:', asyncio.run(check_astral_api_health())['status'])"
 ```
+
+### Available Agent Tools
+
+- `check_astral_api_health`: Verify connectivity to the Astral API
+- `get_server_info`: Get information about the MCP server instance
+- `query_location_proofs`: Query location proofs by various filters (chain, prover, schema ID, etc.)
+- `get_location_proof_by_uid`: Retrieve a specific location proof attestation by its unique identifier
+- `get_astral_config`: Fetch the Astral API configuration and supported chains
+
+Learn more about the available tools and how to use them in the [MCP Tools Guide](docs/mcp-tools-guide.md).
 
 ### Testing the MCP Server
 
@@ -122,11 +132,6 @@ Run the test suite:
 ```bash
 poetry run pytest tests/ -v
 ```
-
-### Available Tools
-
-- `check_astral_api_health`: Verify connectivity to the Astral API
-- `get_server_info`: Get information about the MCP server instance
 
 ### Development
 
