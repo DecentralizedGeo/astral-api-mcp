@@ -127,6 +127,11 @@ poetry run pytest tests/ -v
 
 - `check_astral_api_health`: Verify connectivity to the Astral API
 - `get_server_info`: Get information about the MCP server instance
+- `query_location_proofs`: Query location proofs by various filters (chain, prover, schema ID, etc.)
+- `get_location_proof_by_uid`: Retrieve a specific location proof attestation by its unique identifier
+- `get_astral_config`: Fetch the Astral API configuration and supported chains
+
+Learn more about the available tools and how to use them in the [MCP Tools Guide](docs/mcp-tools-guide.md).
 
 ### Development
 
