@@ -26,7 +26,7 @@ build-backend = "poetry.core.masonry.api"
 start-server = "astral_mcp_server.server:main"
 
 [tool.black]
-line-length = 88
+line-length = 130
 target-version = ['py312']
 
 [tool.mypy]
