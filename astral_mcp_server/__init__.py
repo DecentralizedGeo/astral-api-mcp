@@ -5,8 +5,8 @@ A Model Context Protocol server that enables AI models to query location attesta
 using the Astral GraphQL endpoints and APIs.
 """
 
-__version__ = "0.1.0"
-__author__ = "AR"
+__version__ = "0.1.1"
+__author__ = "Seth Docherty"
 
 from .server import app
 
