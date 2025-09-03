@@ -21,5 +21,8 @@
 			"envFile": "${workspaceFolder}/.env-mcp-inspector",
 			"type": "stdio"
 		}
-	}
+	},
+	"mcp_agent": {
+		"use_dev_endpoint": true
+		}
 }

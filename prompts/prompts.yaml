@@ -1,0 +1,42 @@
+prompts:
+  - name: query_location_proofs
+    description: "Query Astral location proofs with filters (chain, prover, subject, bbox, time range)."
+    arguments:
+      - name: chain
+        description: "Chain name (arbitrum, celo, sepolia, base)"
+        required: false
+      - name: prover
+        description: "Prover wallet address (0x...)"
+        required: false
+      - name: subject
+        description: "Subject wallet address (0x...)"
+        required: false
+      - name: from_timestamp
+        description: "ISO start date, e.g. 2023-07-01T00:00:00Z"
+        required: false
+      - name: to_timestamp
+        description: "ISO end date"
+        required: false
+      - name: bbox
+        description: "Bounding box [minLng,minLat,maxLng,maxLat] or comma-separated string"
+        required: false
+      - name: limit
+        description: "Max results to return"
+        required: false
+      - name: offset
+        description: "Pagination offset"
+        required: false
+
+  - name: get_location_proof_by_uid
+    description: "Fetch a single location proof by UID."
+    arguments:
+      - name: uid
+        description: "Attestation UID (0x + 64 hex chars)"
+        required: true
+      - name: geojson_block
+        description: "Return GeoJSON Feature Collection when true (explicit flag)"
+        required: false
+
+  - name: check_astral_api_health
+    description: "Check health status of the Astral API (GET /health)."
+    arguments: []

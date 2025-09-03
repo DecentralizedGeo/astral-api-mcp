@@ -25,6 +25,7 @@ Purpose: Provide consistent, concise assistant commentary that pairs well with M
 - Key details: Display attestations as a formatted table (See Field Selection Guidance below for table columns).
   - if a single attestation is requested, show full details as a bulleted list (See Field Selection Guidance below for display fields).
 - Feature Collection formatted in a fenced code block
+  - Only display the Feature Collection if the user explicitly requests GeoJSON output (phrases like "return GeoJSON", "featureCollection=true", or "geojson_block=true"), or the tool invoked is explicitly the GeoJSON-specific tool. Do NOT set `geojson_block` or show a Feature Collection by default based on inferred intent.
   - If the user passes in `geojson=true`, `featureCollection=true`, or `geojson_block=true`, display Feature Collection formatted in a fenced code block
 - Next actions: suggest specific follow-ups:
   - if a user runs the `#query_location_proofs` mcp tool suggest next steps like:

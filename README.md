@@ -61,6 +61,45 @@ poetry run python -c "import astral_mcp_server; print('Installation successful!'
 poetry run python -c "import asyncio; from astral_mcp_server.server import check_astral_api_health; print('Health check:', asyncio.run(check_astral_api_health())['status'])"
 ```
 
+### Configuration
+
+**Selecting API Endpoint**:
+
+The MCP server can be configured to use either the production or development Astral API endpoint:
+
+1. **Via Environment Variable** (highest priority):
+
+   ```bash
+   export ASTRAL_USE_DEV_ENDPOINT=true
+   poetry run start-server
+   ```
+
+2. **Via MCP Configuration** (`.vscode/mcp.json`):
+
+   ```json
+   {
+     "servers": {
+       "astral-api": {
+         "command": "poetry",
+         "args": ["run", "start-server"],
+         "cwd": "${workspaceFolder}",
+         "type": "stdio"
+       }
+     },
+     "mcp_agent": {
+       "use_dev_endpoint": true,
+       "dev_endpoint": "https://custom-dev-api.example.com"
+     }
+   }
+   ```
+
+**Configuration Options**:
+
+- `use_dev_endpoint`: Set to `true` to use the development API endpoint
+- `dev_endpoint` (optional): Override the default dev endpoint URL with a custom one
+
+The server will automatically select the appropriate endpoint on startup and log which endpoint is being used.
+
 ### Available Agent Tools
 
 - `check_astral_api_health`: Verify connectivity to the Astral API

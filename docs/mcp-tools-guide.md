@@ -2,6 +2,48 @@
 
 This guide provides comprehensive documentation for the MCP (Model Context Protocol) tools available in the Astral API MCP server, along with example prompts and usage patterns.
 
+## Configuration
+
+### API Endpoint Selection
+
+The MCP server supports both production and development Astral API endpoints. You can configure which endpoint to use:
+
+**Via Environment Variable** (highest priority):
+
+```bash
+export ASTRAL_USE_DEV_ENDPOINT=true
+```
+
+**Via MCP Configuration** (`.vscode/mcp.json`):
+
+```json
+{
+  "servers": {
+    "astral-api": {
+      "command": "poetry",
+      "args": ["run", "start-server"],
+      "cwd": "${workspaceFolder}",
+      "type": "stdio"
+    }
+  },
+  "mcp_agent": {
+    "use_dev_endpoint": true,
+    "dev_endpoint": "https://custom-dev-api.example.com"
+  }
+}
+```
+
+**Configuration Options**:
+
+- `use_dev_endpoint`: Set to `true` to use the development API endpoint
+- `dev_endpoint` (optional): Override the default dev endpoint URL with a custom one
+
+The server will log which endpoint is being used on startup. This is useful for:
+
+- Testing against development versions of the API
+- Using custom or staging endpoints
+- Switching between environments without code changes
+
 ## Available MCP Tools
 
 The Astral MCP server provides 5 main tools for interacting with the Astral API:
@@ -67,6 +109,10 @@ Verify API connectivity #check_astral_api_health
 
 - `chain` (optional): Filter by blockchain network (e.g., "ethereum", "polygon")
 - `prover` (optional): Filter by prover wallet address
+- `subject` (optional): Filter by subject wallet address
+- `from_timestamp` (optional): ISO date string to filter proofs after this timestamp
+- `to_timestamp` (optional): ISO date string to filter proofs before this timestamp
+- `bbox` (optional): Bounding box coordinates as `[minLng,minLat,maxLng,maxLat]` (comma-separated string or array)
 - `limit` (optional): Maximum results to return (default: 10, max: 100)
 - `offset` (optional): Results to skip for pagination (default: 0)
 - `geojson_block` (optional): Include GeoJSON FeatureCollection output (aliases: `geojson=true`, `featureCollection=true`)
@@ -78,7 +124,9 @@ Show me the latest 10 location proofs #query_location_proofs
 Find location attestations on the ethereum chain #query_location_proofs
 Get location proofs from prover address 0x1234... #query_location_proofs
 Show 20 location proofs with pagination offset 10 #query_location_proofs and include the featureCollection output
-
+Find attestations for subject 0xabcd... from the last week #query_location_proofs
+Get location proofs within bounding box -122.5,37.7,-122.3,37.8 #query_location_proofs
+Query proofs from January 1st to February 1st, 2025 #query_location_proofs
 ```
 
 **Advanced Usage**:
@@ -87,13 +135,18 @@ Show 20 location proofs with pagination offset 10 #query_location_proofs and inc
 #query_location_proofs Find location attestations on polygon network with limit 25
 #query_location_proofs Get the next 10 results after offset 20 for ethereum chain
 #query_location_proofs Show location proofs from wallet 0xabcd... geojson=true
+#query_location_proofs Filter by subject 0x1234... and prover 0x5678... on ethereum
+#query_location_proofs Get proofs from timestamp 2025-01-01T00:00:00Z to 2025-01-31T23:59:59Z
+#query_location_proofs Find attestations in San Francisco bbox -122.5,37.7,-122.3,37.8 with limit 50
 ```
 
 **Use Cases**:
 
 - Exploring recent location attestations
-- Analyzing activity by specific provers
+- Analyzing activity by specific provers or subjects
 - Chain-specific location data analysis
+- Time-based analysis and historical queries
+- Geographic filtering within specific regions
 - Pagination through large datasets
 - Geographic visualization preparation
 
@@ -218,6 +271,29 @@ Find polygon network attestations from the last batch
 ```text
 Get all recent location proofs from wallet 0x742d35Cc6634C0532925a3b8D...
 Show attestation history for prover 0xabcd... with pagination
+```
+
+### Subject Analysis
+
+```text
+Find all attestations for subject 0x1234... across all chains
+Get location proofs where subject 0xabcd... was attested by prover 0x5678...
+```
+
+### Temporal Filtering
+
+```text
+Query location proofs from the last 24 hours
+Get attestations between 2025-01-01 and 2025-01-31
+Find proofs submitted after 2025-02-15T10:00:00Z
+```
+
+### Geographic Filtering
+
+```text
+Get location proofs within San Francisco bay area (bbox: -122.5,37.7,-122.3,37.8)
+Find attestations in a specific geographic region with custom bounding box
+Query proofs within coordinates and include GeoJSON for mapping
 ```
 
 ### Geographic Data Extraction
