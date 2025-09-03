@@ -140,6 +140,10 @@ async def get_server_info() -> Dict[str, object]:
 async def query_location_proofs(
     chain: Optional[str] = None,
     prover: Optional[str] = None,
+    subject: Optional[str] = None,
+    from_timestamp: Optional[str] = None,
+    to_timestamp: Optional[str] = None,
+    bbox: Optional[Union[str, list]] = None,
     limit: Optional[int] = 10,
     offset: Optional[int] = 0,
     geojson_block: bool = False,
@@ -147,12 +151,16 @@ async def query_location_proofs(
     """
     Query location proofs (attestations) from the Astral API with filtering capabilities.
 
-    Enables searching for location attestations using chain, prover, and limit filters to analyze blockchain
-    location activity and identify patterns in attestation data.
+    Enables searching for location attestations using chain, prover, subject, time range,
+    bounding box and pagination filters.
 
     Args:
         chain (Optional[str]): Filter by blockchain network (e.g., "ethereum", "polygon").
         prover (Optional[str]): Filter by prover address (hexadecimal address).
+        subject (Optional[str]): Filter by subject address (hexadecimal address).
+        from_timestamp (Optional[str]): ISO date string to filter proofs after this timestamp.
+        to_timestamp (Optional[str]): ISO date string to filter proofs before this timestamp.
+        bbox (Optional[str|list]): Bounding box `[minLng,minLat,maxLng,maxLat]` as comma-separated string or list.
         limit (Optional[int]): Max results to return (default: 10, max: 100).
         offset (Optional[int]): Results to skip for pagination (default: 0).
         geojson_block (bool): When True, append a separate JSON block containing a GeoJSON FeatureCollection.
@@ -164,8 +172,11 @@ async def query_location_proofs(
         Exception: If the API request fails or parameters are invalid.
     """
     try:
-        validate_query_args(limit, offset, prover)
-        params = build_query_params(chain, prover, limit, offset)
+        # validate all query args
+        validate_query_args(limit, offset, prover, subject, from_timestamp, to_timestamp, bbox)
+        params = build_query_params(
+            chain, prover, limit, offset, subject=subject, from_timestamp=from_timestamp, to_timestamp=to_timestamp, bbox=bbox
+        )
 
         async with httpx.AsyncClient(timeout=DEFAULT_TIMEOUT) as client:
             logger.info(f"Querying location proofs with params: {params}")
