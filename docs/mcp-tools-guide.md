@@ -2,6 +2,48 @@
 
 This guide provides comprehensive documentation for the MCP (Model Context Protocol) tools available in the Astral API MCP server, along with example prompts and usage patterns.
 
+## Configuration
+
+### API Endpoint Selection
+
+The MCP server supports both production and development Astral API endpoints. You can configure which endpoint to use:
+
+**Via Environment Variable** (highest priority):
+
+```bash
+export ASTRAL_USE_DEV_ENDPOINT=true
+```
+
+**Via MCP Configuration** (`.vscode/mcp.json`):
+
+```json
+{
+  "servers": {
+    "astral-api": {
+      "command": "poetry",
+      "args": ["run", "start-server"],
+      "cwd": "${workspaceFolder}",
+      "type": "stdio"
+    }
+  },
+  "mcp_agent": {
+    "use_dev_endpoint": true,
+    "dev_endpoint": "https://custom-dev-api.example.com"
+  }
+}
+```
+
+**Configuration Options**:
+
+- `use_dev_endpoint`: Set to `true` to use the development API endpoint
+- `dev_endpoint` (optional): Override the default dev endpoint URL with a custom one
+
+The server will log which endpoint is being used on startup. This is useful for:
+
+- Testing against development versions of the API
+- Using custom or staging endpoints
+- Switching between environments without code changes
+
 ## Available MCP Tools
 
 The Astral MCP server provides 5 main tools for interacting with the Astral API:
