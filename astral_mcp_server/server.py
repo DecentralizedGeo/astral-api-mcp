@@ -6,10 +6,20 @@ A FastMCP-based server that provides tools for querying location attestations th
 
 import logging
 import re
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 
 import httpx
 from mcp.server.fastmcp import FastMCP
+
+import json
+from pathlib import Path
+import mcp.types as types
+
+# Optional YAML support
+try:
+    import yaml  # type: ignore
+except Exception:
+    yaml = None
 
 from astral_mcp_server.helpers import (
     ERROR_TEXT_TRUNCATE_LENGTH,
@@ -427,6 +437,78 @@ async def get_astral_config() -> Dict[str, object]:
         }
 
 
+# File-backed prompts support
+def _find_prompts_file() -> Path | None:
+    repo_root = Path(__file__).resolve().parents[1]
+    candidates = [
+        repo_root / "prompts" / "prompts.yaml",
+        repo_root / "prompts" / "prompts.yml",
+        repo_root / "prompts" / "prompts.json",
+        repo_root / ".vscode" / "mcp_prompts.yaml",
+        repo_root / ".vscode" / "mcp_prompts.yml",
+        repo_root / ".vscode" / "mcp_prompts.json",
+    ]
+    for p in candidates:
+        if p.exists():
+            return p
+    return None
+
+
+def _load_prompts_from_file() -> list[types.Prompt]:
+    """Load prompts from a JSON or YAML file and return list of mcp.types.Prompt.
+
+    Expected file shape: either a list of prompts or a dict with key "prompts".
+    Each prompt object: { name: str, description?: str, arguments?: [{name,description,required}], meta?: {...} }
+    """
+    pfile = _find_prompts_file()
+    if pfile is None:
+        return []
+
+    text = pfile.read_text(encoding="utf-8")
+    if pfile.suffix.lower() in (".yaml", ".yml"):
+        if yaml is None:
+            raise RuntimeError("pyyaml is required to read YAML prompt files; install pyyaml or use JSON prompt file")
+        parsed = yaml.safe_load(text)
+    else:
+        parsed = json.loads(text)
+
+    if isinstance(parsed, dict) and "prompts" in parsed:
+        items = parsed["prompts"]
+    elif isinstance(parsed, list):
+        items = parsed
+    else:
+        raise ValueError("Unexpected prompts file format; expected list or {prompts: [...]}")
+
+    prompts: list[types.Prompt] = []
+    for item in items:
+        if not isinstance(item, dict) or "name" not in item:
+            continue
+        args_raw = item.get("arguments") or []
+        args: list[types.PromptArgument] = []
+        for a in args_raw:
+            if not isinstance(a, dict) or "name" not in a:
+                continue
+            # Use indexing to ensure `name` is present and not None for typing
+            args.append(
+                types.PromptArgument(name=a["name"], description=a.get("description"), required=a.get("required"))
+            )
+        prompt = types.Prompt(
+            name=item["name"],
+            description=item.get("description"),
+            arguments=args or None,
+            _meta=item.get("meta"),
+        )
+        prompts.append(prompt)
+
+    return prompts
+
+
+# Simple implementation - disable prompt registration entirely for now
+def _register_prompt_handlers() -> None:
+    """Prompt handlers registration is disabled to avoid FastMCP compatibility issues."""
+    logger.info("Prompt handlers registration skipped - prompts functionality disabled")
+
+
 def main() -> None:
     """
     Main entry point for running the MCP server.
@@ -436,6 +518,9 @@ def main() -> None:
     logger.info(f"Starting {SERVER_NAME} v{SERVER_VERSION}")
 
     try:
+        # Register handlers that require decorator factories before running
+        _register_prompt_handlers()
+
         app.run()
     except KeyboardInterrupt:
         logger.info("Server shutdown requested")
