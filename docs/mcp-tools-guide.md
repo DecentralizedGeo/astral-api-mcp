@@ -309,7 +309,7 @@ Get location proof 0x1234... with geographic coordinates
 
 ### Using Assistant Style Guidelines
 
-This MCP server includes comprehensive assistant style guidelines (see `docs/ai/assistant-style.md`) that define:
+This MCP server includes comprehensive assistant style guidelines (see [Assistant Style Guidelines](docs/ai/assistant-style.md)) that define:
 
 - **Response Structure**: Consistent Summary → Key Details → Next Actions format
 - **Formatting Conventions**: Table layouts, inline code formatting, and link generation
